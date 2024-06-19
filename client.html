@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #video-container {
+            display: none;
+            width: 100%;
+            height: 80vh;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+        }
+        #video-title {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        #playButton {
+            font-size: 24px;
+            padding: 10px 20px;
+            cursor: pointer;
+            display: none;
+        }
+        #input-arc {
+            margin-bottom: 10px;
+            font-size: 16px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <input placeholder="arc" id="input-arc" value="11" /> <!-- Default value for testing -->
+
+    <div id="video-container">
+        <video id="video" controls ></video>
+        <div id="video-title"></div>
+    </div>
+    <button id="playButton">Play Video</button>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var playButton = document.getElementById('playButton');
+            var inputArc = document.getElementById('input-arc');
+            var videoContainer = document.getElementById('video-container');
+            var video = document.getElementById('video');
+            var videoTitle = document.getElementById('video-title');
+            var videoList = []; // Array to store videos and titles
+            var currentVideoIndex = 0; // Index of the current video
+
+            // Function to fetch data from server based on input arc value
+            function fetchData(arc) {
+                fetch(`https://one-pace-one.vercel.app/arcs/${arc}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Assume data is an array of video objects
+                        if (Array.isArray(data) && data.length > 0) {
+                            videoList = data;
+                            loadVideo(currentVideoIndex); // Load the first video
+                        } else {
+                            console.error('No video data found.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching video data:', error);
+                    });
+            }
+
+            // Load video function
+            function loadVideo(index) {
+                var currentVideo = videoList[index];
+                video.src = currentVideo.link;
+                videoTitle.textContent = currentVideo.title;
+
+                // Show the video container and hide the play button
+                videoContainer.style.display = 'block';
+                playButton.style.display = 'none';
+
+                // Try to play the video and request fullscreen
+                video.play().then(function() {
+                    if (video.requestFullscreen) {
+                        video.requestFullscreen();
+                    } else if (video.mozRequestFullScreen) { // Firefox
+                        video.mozRequestFullScreen();
+                    } else if (video.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                        video.webkitRequestFullscreen();
+                    } else if (video.msRequestFullscreen) { // IE/Edge
+                        video.msRequestFullscreen();
+                    }
+                }).catch(function(error) {
+                    console.error('Video playback failed:', error);
+                });
+
+                // Play the next video when current video ends
+                video.onended = function() {
+                    currentVideoIndex++;
+                    if (currentVideoIndex < videoList.length) {
+                        loadVideo(currentVideoIndex);
+                    } else {
+                        console.log('All videos have been played.');
+                    }
+                };
+            }
+
+            // Event listener for input change
+            inputArc.addEventListener('change', function() {
+                var arcValue = inputArc.value;
+                currentVideoIndex = 0; // Reset current video index
+                fetchData(arcValue); // Fetch data for the new arc value
+            });
+
+            // Initial fetch and load for default arc value
+            fetchData(inputArc.value);
+
+            // Simulate click on playButton after data is loaded
+            playButton.click();
+        });
+    </script>
+</body>
+</html>
