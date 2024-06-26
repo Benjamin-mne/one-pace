@@ -85,7 +85,7 @@ $arcsList.addEventListener('click', async function (e) {
     const { id } = e.target.closest('article');
     currentArcIndex = id;
     currentVideoIndex = 0;
-    episodes = await fetchEpisodes(currntArcIndex);
+    episodes = await fetchEpisodes(currentArcIndex);
     renderData(episodes);
 })
 
@@ -110,7 +110,6 @@ $video.onended = async function () {
     } else {
         currentArcIndex++;
         currentVideoIndex = 0;
-        console.log('xd')
         episodes = await fetchEpisodes(currentArcIndex);
         renderData(episodes);
     }
