@@ -114,3 +114,9 @@ $video.onended = async function () {
         renderData(episodes);
     }
 };
+
+$video.addEventListener('loadedmetadata', function() {
+    if (currentVideoIndex !== 0){
+        this.currentTime = 110
+    }
+}, false);
