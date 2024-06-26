@@ -7,6 +7,7 @@ var $arcsList = document.getElementById('arcs-list');
 var arcs = [];
 var episodes = [];
 var currentVideoIndex = 0; 
+var currentArcIndex = 0;
 
 const API_URL = 'https://one-pace-one.vercel.app'
 
@@ -82,15 +83,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 $arcsList.addEventListener('click', async function (e) {
     const { id } = e.target.closest('article');
+    currentArcIndex = id;
     currentVideoIndex = 0;
-    episodes = await fetchEpisodes(id);
+    episodes = await fetchEpisodes(currntArcIndex);
     renderData(episodes);
 })
 
 $episodesList.addEventListener('click', function (e) {
     const { id } = e.target.closest('article');
-
-    console.log(id)
 
     if (id !== currentVideoIndex){
         currentVideoIndex = id;
@@ -99,3 +99,19 @@ $episodesList.addEventListener('click', function (e) {
         $videoDescription.innerHTML = episodes[currentVideoIndex].description;
     }
 })
+
+$video.onended = async function () {
+    if (currentVideoIndex < episodes.length - 1) {
+        currentVideoIndex++;
+
+        $video.src = episodes[currentVideoIndex].videoUrl;
+        $videoTitle.innerHTML = episodes[currentVideoIndex].title;
+        $videoDescription.innerHTML = episodes[currentVideoIndex].description;
+    } else {
+        currentArcIndex++;
+        currentVideoIndex = 0;
+        console.log('xd')
+        episodes = await fetchEpisodes(currentArcIndex);
+        renderData(episodes);
+    }
+};
