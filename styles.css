@@ -16,8 +16,9 @@ li{
 
 article{
     border-radius: 10px;
-    background: rgb(24, 24, 24);
+    background: rgb(40, 40, 40);
     cursor: pointer;
+    overflow: hidden;
 }
 
 ::-webkit-scrollbar-corner{
@@ -50,14 +51,15 @@ header{
         border: none;
         padding: 5px 10px;
         border-radius: 10px;
-        background: rgb(24, 24, 24);
+        background: rgb(40, 40, 40);
     }
 
     article{
-        background: rgb(24, 24, 24);
+        background: rgb(40, 40, 40);
         height: 250px;
         width: 200px;
         position: relative;
+
 
         p {
             position: absolute;
@@ -112,7 +114,7 @@ main{
     li{
         min-height: 200px;
         max-height: 200px;
-        background: rgb(24, 24, 24);
+        background: rgb(40, 40, 40);
     }
 
     article{
@@ -135,7 +137,7 @@ video{
     border-radius: 10px;
     height: calc(100vh - 60px);
     width: 100%;
-    background: rgb(24, 24, 24);
+    background: rgb(40, 40, 40);
     justify-self: center;
 }
 
@@ -164,7 +166,7 @@ footer{
     padding: 30px;
     justify-content: center;
     align-items: center;
-    background: rgb(24, 24, 24);
+    background: rgb(40, 40, 40);
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-style: oblique;
     text-align: center;
@@ -195,5 +197,63 @@ a{
         color: lightgray;
         width: 95%;
         text-align: justify;
+    }
+}
+
+@media (width <= 600px){
+    header{
+        height: 100%;
+        padding: 10px;
+        padding-right: 0px;
+
+        ul{
+            gap: 10px;
+        }
+
+        li{
+            img{
+                background: rgb(40, 40, 40);
+            }
+        }
+    }
+
+    main{
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 10px;
+
+        ul{
+            flex-direction: row;
+            padding-right: 0px;
+            overflow-y: auto;
+        }
+
+        article{
+            height: calc(100%);
+            width: 200px;
+            position: relative;
+
+            p {
+                position: absolute;
+                width: calc(100% - 16px);
+                bottom: 0;
+                background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.618) 70%);
+                padding: 5px 8px;
+                font-size: medium;
+            }
+        }
+        
+    }
+
+    video{
+        height: auto;
+        min-height: 210px;
+        max-height: 210px;
+    }
+
+    footer{
+        margin-top: 10px;
+        padding: 20px;
     }
 }
