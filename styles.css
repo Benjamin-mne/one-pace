@@ -195,6 +195,11 @@ a{
     gap: 10px;
 }
 
+li img{
+    opacity: 40%;
+    scale: 1.5;
+}
+
 #video-container p{
     color: lightgray;
     width: 95%;

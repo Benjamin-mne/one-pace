@@ -44,7 +44,7 @@ function renderData(episodes){
             <li>
                 <a href="#video-container">
                 <article id="${index}">
-                    <img src="${video?.imgUrl}" alt="episode-img" />
+                    <img src="${arcs[currentArcIndex]?.imgUrl}" alt="episode-img" />
                     <p>${video.title}</p>
                 </article>
                 </a>
