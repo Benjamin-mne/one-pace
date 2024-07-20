@@ -1,9 +1,12 @@
 *{
     margin: 0;
-    background: black;
-    color: white;
     scroll-behavior: smooth;
     font-family: Arial, sans-serif;
+    color: rgb(235, 235, 235);
+}
+
+body{
+    background: rgb(20, 20, 20);
 }
 
 ul{
@@ -36,6 +39,32 @@ article{
     border-radius: 10px;
 }
 
+#arcs-list {
+    overflow: hidden;
+}
+
+.arrow{
+    background: linear-gradient(to right, transparent 0%, rgba(20, 20, 20, 0.5) 50%);
+    height: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 9;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+}
+
+#slider-arrow-left {
+    rotate: 180deg;
+    left: 0;
+    display: none;
+}
+
+#slider-arrow-rigth {
+    right: 0;
+}
+
 header input{
     height: 30px;
     width: 300px;
@@ -53,6 +82,7 @@ header{
     padding: 10px 0px 0px 30px;
     gap: 15px;
     height: 55vh;
+    position: relative;
 }
 
 header article{
@@ -146,18 +176,6 @@ img{
     object-fit: cover;
 }
 
-nav{
-    width: calc(100% - 30px);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-right: 30px;
-}
-
-nav img{
-    height: 50px;
-}
-
 footer{
     display: flex;
     flex-direction: column;
@@ -193,17 +211,58 @@ a{
     flex-direction: column;
     justify-content: center;
     gap: 10px;
+    position: relative;
 }
 
 li img{
     opacity: 40%;
-    scale: 1.5;
+    scale: 2.4;
 }
 
-#video-container p{
-    color: lightgray;
-    width: 95%;
-    text-align: justify;
+#video-overlay {
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.618) 70%);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    animation: onScreen .3s ease-in-out;
+    cursor: pointer;
+}
+
+#video-info {
+    position: absolute;
+    bottom: 0;
+    margin: 200px 50px;
+    background: transparent;
+
+}
+
+#video-info h1{
+    background: transparent;
+}
+
+#video-info p{
+    background: transparent;
+}
+
+#video-overlay svg{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    scale: .2;
+    background: transparent;
+    display: none;
+}
+
+@keyframes onScreen {
+    0%{
+        opacity: 0%;
+    }
+    100%{
+        opacity: 100%;
+    }
 }
 
 @media (width <= 600px){

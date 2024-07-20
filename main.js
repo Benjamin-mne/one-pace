@@ -1,8 +1,13 @@
 var $video = document.getElementById('video');
 var $videoTitle = document.getElementById('video-title');
+var $videoOverlay = document.getElementById('video-overlay');
 var $videoDescription = document.getElementById('video-description');
+var $videoSpinning = document.getElementById('video-spinning');
 var $episodesList = document.getElementById('episodes-list');
 var $arcsList = document.getElementById('arcs-list');
+var $sliderArrowRigth = document.getElementById('slider-arrow-rigth');
+var $sliderArrowLeft = document.getElementById('slider-arrow-left');
+
 
 var arcs = [];
 var episodes = [];
@@ -54,7 +59,7 @@ function renderData(episodes){
 
         $video.src = episodes[currentVideoIndex]?.videoUrl;
         $videoTitle.innerHTML = episodes[currentVideoIndex].title;
-        $videoDescription.innerHTML = episodes[currentVideoIndex].description;
+        $videoDescription.innerHTML = episodes[currentVideoIndex].description ?? 'La descripción de los capítulos no están disponibles.';
     } else {
         console.error('No video data found.');
     }
@@ -83,6 +88,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 $arcsList.addEventListener('click', async function (e) {
     const { id } = e.target.closest('article');
+
     currentArcIndex = id;
     currentVideoIndex = 0;
     episodes = await fetchEpisodes(currentArcIndex);
@@ -115,8 +121,77 @@ $video.onended = async function () {
     }
 };
 
+$video.addEventListener('loadstart', function(){
+    $videoSpinning.style.display = 'block'
+})
+
 $video.addEventListener('loadedmetadata', function() {
     if (currentVideoIndex !== 0){
         this.currentTime = 110
     }
+    $videoSpinning.style.display = 'none'
+
 }, false);
+
+$video.addEventListener('stalled', function() {
+    alert('metadata')
+})
+
+$video.addEventListener('seeked', function() {
+
+    if ($video.onloadeddata){
+        $videoSpinning.style.display = 'block'
+    }
+
+    if ($video.paused) {
+        $video.play();
+    }
+});
+
+$video.onplay = function () {
+    $videoOverlay.style.display = 'none';
+    $video.setAttribute('controls', true);
+}
+
+$video.onpause = function () {
+    $videoOverlay.style.display = 'block';
+    
+    $video.removeAttribute('controls');
+}
+
+$videoOverlay.addEventListener('click', function () {
+    $video.play()
+})
+
+$sliderArrowRigth.addEventListener('click', function() {
+    $sliderArrowLeft.style.display = 'flex'
+    const scrollAmount = 1000;
+    
+
+    $arcsList.scrollBy({
+        top: 0,
+        left: scrollAmount,
+        behavior: 'smooth'
+    });
+})
+
+$sliderArrowLeft.addEventListener('click', function() {
+    const scrollAmount = -1000;
+    $sliderArrowRigth.style.display = 'flex'
+    
+    $arcsList.scrollBy({
+        top: 0,
+        left: scrollAmount,
+        behavior: 'smooth'
+    });
+})
+
+$arcsList.addEventListener('scroll', function() {
+    const maxScrollLeft = this.scrollWidth - this.clientWidth;
+
+    if (this.scrollLeft === 0) {
+        $sliderArrowLeft.style.display = 'none'
+    } else if (this.scrollLeft >= maxScrollLeft) {
+        $sliderArrowRigth.style.display = 'none'
+    }
+});
