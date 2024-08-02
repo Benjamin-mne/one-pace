@@ -324,4 +324,12 @@ li img{
         margin-top: 10px;
         padding: 20px;
     }
+
+    #arcs-list{
+        overflow: scroll;
+    }
+
+    .arrow{
+        display: none;
+    }
 }

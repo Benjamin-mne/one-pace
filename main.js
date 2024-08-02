@@ -161,7 +161,7 @@ $videoOverlay.addEventListener('click', function () {
 
 $sliderArrowRigth.addEventListener('click', function() {
     $sliderArrowLeft.style.display = 'flex'
-    const scrollAmount = 1000;
+    const scrollAmount = 850;
     
 
     $arcsList.scrollBy({
