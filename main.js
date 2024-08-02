@@ -133,10 +133,6 @@ $video.addEventListener('loadedmetadata', function() {
 
 }, false);
 
-$video.addEventListener('stalled', function() {
-    alert('metadata')
-})
-
 $video.addEventListener('seeked', function() {
 
     if ($video.onloadeddata){

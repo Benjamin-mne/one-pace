@@ -316,6 +316,10 @@ li img{
         max-height: 210px;
     }
 
+    #video-info{
+        margin: 1rem;
+    }
+
     footer{
         margin-top: 10px;
         padding: 20px;
