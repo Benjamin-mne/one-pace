@@ -81,8 +81,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         )
     })
 
+    const arcIndex = localStorage.getItem('currentArcIndex') ?? 0;
 
-    episodes = await fetchEpisodes(0)
+    episodes = await fetchEpisodes(arcIndex)
+
+    currentVideoIndex = localStorage.getItem('currentEpisodeIndex') ?? 0;
+
     renderData(episodes);
 });
 
@@ -90,7 +94,8 @@ $arcsList.addEventListener('click', async function (e) {
     const { id } = e.target.closest('article');
 
     currentArcIndex = id;
-    currentVideoIndex = 0;
+
+    saveCurrentView(currentArcIndex, currentVideoIndex);
     episodes = await fetchEpisodes(currentArcIndex);
     renderData(episodes);
 })
@@ -104,6 +109,8 @@ $episodesList.addEventListener('click', function (e) {
         $videoTitle.innerHTML = episodes[currentVideoIndex].title;
         $videoDescription.innerHTML = episodes[currentVideoIndex].description;
     }
+
+    saveCurrentView(currentArcIndex, currentVideoIndex);
 })
 
 $video.onended = async function () {
@@ -191,3 +198,8 @@ $arcsList.addEventListener('scroll', function() {
         $sliderArrowRigth.style.display = 'none'
     }
 });
+
+function saveCurrentView(currentArcIndex, currentEpisodeIndex) {
+    localStorage.setItem('currentArcIndex', currentArcIndex);
+    localStorage.setItem('currentEpisodeIndex', currentEpisodeIndex);
+} 
